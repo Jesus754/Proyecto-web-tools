@@ -7,7 +7,7 @@ app.set('port', 3000);
 app.use(express.json());
 app.use(express.urlencoded({ extended:false}));
 
-app.use('/api', require('./routes/routes'));
+app.use('/api', require('./routes/pizza'));
 
 app.listen(app.get('port'), () => {
     console.log("Servidor corriendo en", app.get('port'));
