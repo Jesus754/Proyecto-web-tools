@@ -1,8 +1,12 @@
 const mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const uniqueValidator = require('mongoose-unique-validator');
 
-var PizzaSchema = new Schema({
+let Schema = mongoose.Schema;
+
+
+let PizzaSchema = new Schema({
     nombre: {
+        unique: true,
         type: String,
         required: true
     },
@@ -10,6 +14,10 @@ var PizzaSchema = new Schema({
         type: String,
         required: false
     },
+})
+
+PizzaSchema.plugin(uniqueValidator, {
+    message: 'el campo {PATH} debe ser único'
 })
 
 module.exports = mongoose.model('Pizza', PizzaSchema);

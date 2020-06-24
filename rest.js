@@ -1,4 +1,4 @@
-const connection = require('./connection');
+const connection = require('./src/connection');
 const express = require('express');
 const app = express();
 
@@ -7,7 +7,7 @@ app.set('port', 3000);
 app.use(express.json());
 app.use(express.urlencoded({ extended:false}));
 
-app.use('/api', require('./routes/pizza'));
+app.use('/api', require('./src/routes/pizza'));
 
 app.listen(app.get('port'), () => {
     console.log("Servidor corriendo en", app.get('port'));
