@@ -28,4 +28,4 @@ PizzaSchema.plugin(uniqueValidator, {
 })
 
 
-module.exports = mongoose.model('Pizza', PizzaSchema);
+module.exports = mongoose.model('pizza', PizzaSchema);

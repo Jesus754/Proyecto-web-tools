@@ -1,12 +1,31 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const mongooseUniqueValidator = require('mongoose-unique-validator');
+//const UsuarioSchema = require('../models/usuario');
+var AutoIncrement = require('mongoose-sequence')(mongoose);
 
 
-var pedidoSchema = new Schema({
+const Schema = mongoose.Schema;
+
+ 
+
+const PedidoSchema = new Schema({
     numero: Number,
-    usuario: [{id: usuario.id, nombre: usuario.nombre, apellido: usuario.apellido, direccion: String}],
-    pedido : [{pizzaSchema}],
+    usuario: {
+        userId: String,
+        nombre: String,
+        apellido: String,
+        direccion: String,
+        telefono: String
+    }, 
+    pizzas: [{
+        nombre: String,
+        cantidad: Number
+    }],
+    total: {
+        type: Number,
+    }
 })
 
 
-module.exports = mongoose.model('pedido', pedidoSchema);
+PedidoSchema.plugin(AutoIncrement, {id:'order_seq',inc_field: 'numero'});
+module.exports = mongoose.model('pedido', PedidoSchema);

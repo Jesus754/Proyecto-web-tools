@@ -69,7 +69,7 @@ exports.deletePizza = function deletePizza(req,res) {
             if(err){
                 res.status(400).json({
                     ok:false,
-                    message: 'La eliminacion a fallado',
+                    message: 'La eliminacion fallo',
                     err:err
                 })
             }else {
@@ -122,7 +122,6 @@ exports.deleteAll = function deleteAll(req,res) {
 
 exports.updatePizza = function(req,res) {
     let nombre = req.params.nombre;
-    console.log(nombre);
     let body = req.body;
     Pizza.updateOne({ nombre: nombre}, body, (err,pizza) => {
         if (err) {
@@ -147,5 +146,4 @@ exports.updatePizza = function(req,res) {
         }
 
     })
-    console.log();
 }

@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
-let Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-let usuarioSchema = new Schema({
+const uniqueValidator = require('mongoose-unique-validator');
+
+const UsuarioSchema = new Schema({
     nombre: {
         type: String,
         required: [true, 'El nombre es necesario']
@@ -18,6 +20,13 @@ let usuarioSchema = new Schema({
         type: String,
         required: [true, 'El telefono es necesario']
     },
+    email: {
+        type:String,
+        required: [true, 'El email es necesario'],
+        unique: true,
+        lowercase:true
+
+    },
     contraseña: {
         type: String,
         required: [true, 'La contraseña es necesaria']
@@ -25,4 +34,8 @@ let usuarioSchema = new Schema({
 
 })
 
-module.exports = mongoose.model('usuario', usuarioSchema);
+UsuarioSchema.plugin(uniqueValidator, {
+    message: 'el {PATH} ya se encuentra registrado en el sistema'
+})
+
+module.exports = mongoose.model('usuario', UsuarioSchema);
