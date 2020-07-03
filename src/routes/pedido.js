@@ -6,10 +6,10 @@ const pedidoController = require('../Controller/pedidoController')
 
 
 
-router.post('/pedido', pedidoController.createPedido);
 router.get('/pedidos', pedidoController.getAllPedidos);
-router.get('/pedidos/deleteAll',pedidoController.deleteAll);
-router.get('/pedidos/getPedidos/:id', pedidoController.getPedidos);
+
+router.delete('/pedidos/deleteAll',pedidoController.deleteAll);
+
 
 
 module.exports = router;

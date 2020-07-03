@@ -15,6 +15,7 @@ const PedidoSchema = new Schema({
         nombre: String,
         apellido: String,
         direccion: String,
+        email: String,
         telefono: String
     }, 
     pizzas: [{
