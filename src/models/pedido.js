@@ -10,14 +10,7 @@ const Schema = mongoose.Schema;
 
 const PedidoSchema = new Schema({
     numero: Number,
-    usuario: {
-        userId: String,
-        nombre: String,
-        apellido: String,
-        direccion: String,
-        email: String,
-        telefono: String
-    }, 
+    usuarioId: String, 
     pizzas: [{
         nombre: String,
         cantidad: Number
