@@ -38,4 +38,11 @@ UsuarioSchema.plugin(uniqueValidator, {
     message: 'el {PATH} ya se encuentra registrado en el sistema'
 })
 
+UsuarioSchema.methods.toJSON = function() {
+    let user = this;
+    let userObject = user.toObject();
+    delete userObject.contraseña;
+    return userObject;
+}
+
 module.exports = mongoose.model('usuario', UsuarioSchema);

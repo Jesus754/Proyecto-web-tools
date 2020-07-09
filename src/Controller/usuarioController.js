@@ -1,6 +1,7 @@
 const Pedido = require('../models/pedido');
 const Usuario = require('../models/usuario');
-const Pizza = require('../models/pizza')
+const Pizza = require('../models/pizza');
+const bcrypt = require('bcrypt');
 
 exports.getAllPedidos = function getAllPedidos(req, res) {
     Pedido.find({}, (err, pedidos) => {
@@ -86,7 +87,7 @@ exports.createUsuario = function createUsuario(req, res) {
         direccion: req.body.direccion,
         telefono: req.body.telefono,
         email: req.body.email,
-        contraseña: req.body.contraseña
+        contraseña: bcrypt.hashSync(req.body.contraseña, 10) 
     })
     usuario.save()
         .then((usuario) => {
