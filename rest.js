@@ -2,6 +2,7 @@ const connection = require('./src/connection');
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const path = require('path');
 
 app.set('port', 3000);
 
@@ -10,6 +11,10 @@ app.use(bodyParser.json());
 
 
 app.use('/api',require('./src/routes/index'));
+
+//habilitar views
+app.use( express.static( path.resolve(__dirname, './src/views')));
+
 
 app.listen(app.get('port'), () => {
     console.log("Servidor corriendo en", app.get('port'));

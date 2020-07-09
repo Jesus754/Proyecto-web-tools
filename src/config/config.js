@@ -19,3 +19,5 @@ process.env.CADUCIDAD_TOKEN =  60 * 60 * 24 * 30;
 
 // process.env.SEMILLA -> HEROKU (VIDEO "generar un JWT")
 process.env.SEMILLA = process.env.SEMILLA || 'secret';
+
+process.env.CLIENT_ID = process.env.CLIENT_ID || '340599876929-algjo69nullvribihde629gt4d2hh0si.apps.googleusercontent.com';

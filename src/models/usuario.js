@@ -37,6 +37,13 @@ const UsuarioSchema = new Schema({
         default: 'USER_ROLE',
         enum: rolesValidos
     },
+    img: {
+        type:String,
+        required:false
+    },
+    google: {
+        type: String,
+    },
     contraseña: {
         type: String,
         required: [true, 'La contraseña es necesaria']
