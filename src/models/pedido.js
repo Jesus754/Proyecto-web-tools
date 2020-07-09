@@ -6,8 +6,6 @@ var AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const Schema = mongoose.Schema;
 
- 
-
 const PedidoSchema = new Schema({
     numero: Number,
     usuarioId: String, 
@@ -19,7 +17,6 @@ const PedidoSchema = new Schema({
         type: Number,
     }
 })
-
 
 PedidoSchema.plugin(AutoIncrement, {id:'order_seq',inc_field: 'numero'});
 module.exports = mongoose.model('pedido', PedidoSchema);

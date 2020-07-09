@@ -80,7 +80,6 @@ exports.getUsuario = function getUsuario(req, res) {
 }
 
 exports.createUsuario = function createUsuario(req, res) {
-
     let usuario = new Usuario({
         nombre: req.body.nombre,
         apellido: req.body.apellido,
@@ -263,13 +262,11 @@ exports.createPedido = async function createPedido(req, res) {
         }
 
     }
-
     let pedido = new Pedido({
         usuarioId: req.params.id,
         pizzas: pizzas,
         total: total
     })
-
     pedido.save((err) => {
         if (err) {
             res.status(400).json({
