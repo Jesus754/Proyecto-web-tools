@@ -21,7 +21,24 @@ let verificaToken = (req, res, next) => {
     })
 };
 
+let verificaAdminRol = (req, res, next) => {
+
+    //obtengo header
+    let rol = req.get('rol');
+    
+    if (rol === 'ADMIN_ROL') {
+        next();
+    } else {
+        res.json({
+            ok:true,
+            err: {
+                mensaje: 'El usuario no es administrador'
+            }
+        });
+    }
+};
 
 module.exports = {
-    verificaToken
+    verificaToken,
+    verificaAdminRol
 }

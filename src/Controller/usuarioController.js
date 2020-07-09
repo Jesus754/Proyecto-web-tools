@@ -39,7 +39,7 @@ exports.deleteAll = function deleteAll(req, res) {
 }
 
 exports.getUsuarios = function getUsuarios(req, res) {
-    Usuario.find({}, ["nombre", "apellido", "direccion", "telefono", "email"])
+    Usuario.find({})
         .exec((err, usuarios) => {
             if (err) {
                 res.status(400).json({
@@ -57,7 +57,7 @@ exports.getUsuarios = function getUsuarios(req, res) {
 
 exports.getUsuario = function getUsuario(req, res) {
     let id = req.params.id;
-    Usuario.findById(id, ["nombre", "apellido", "direccion", "telefono", "email"])
+    Usuario.findById(id)
         .exec((err, usuario) => {
             if (err) {
                 res.status(400).json({
@@ -87,6 +87,7 @@ exports.createUsuario = function createUsuario(req, res) {
         direccion: req.body.direccion,
         telefono: req.body.telefono,
         email: req.body.email,
+        rol: req.body.rol,
         contraseña: bcrypt.hashSync(req.body.contraseña, 10) 
     })
     usuario.save()
@@ -100,7 +101,8 @@ exports.createUsuario = function createUsuario(req, res) {
                     apellido: usuario.apellido,
                     direccion: usuario.direccion,
                     telefono: usuario.telefono,
-                    email: usuario.email
+                    email: usuario.email,
+                    rol: usuario.rol
                 }
             })
         })

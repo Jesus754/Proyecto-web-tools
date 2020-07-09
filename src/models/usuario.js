@@ -3,6 +3,11 @@ const Schema = mongoose.Schema;
 
 const uniqueValidator = require('mongoose-unique-validator');
 
+let rolesValidos = {
+    values: ['ADMIN_ROL', 'USER_ROL'],
+    message: '{VALUE} no es un rol válido'
+};
+
 const UsuarioSchema = new Schema({
     nombre: {
         type: String,
@@ -26,6 +31,11 @@ const UsuarioSchema = new Schema({
         unique: true,
         lowercase:true
 
+    },
+    rol: {
+        type: String,
+        default: 'USER_ROLE',
+        enum: rolesValidos
     },
     contraseña: {
         type: String,
