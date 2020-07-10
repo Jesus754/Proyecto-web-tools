@@ -7,7 +7,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'dev';
 let urlDB;
 
 if (process.env.NODE_ENV === 'dev') {
-    urlDB = 'mongodb://localhost:27017/cafe';
+    urlDB = 'mongodb://jebu:123@localhost:2222/Taller_web';
 } else {
     urlDB = process.env.MONGO_URI;
 }
@@ -20,4 +20,4 @@ process.env.CADUCIDAD_TOKEN =  60 * 60 * 24 * 30;
 // process.env.SEMILLA -> HEROKU (VIDEO "generar un JWT")
 process.env.SEMILLA = process.env.SEMILLA || 'secret';
 
-process.env.CLIENT_ID = process.env.CLIENT_ID || '340599876929-algjo69nullvribihde629gt4d2hh0si.apps.googleusercontent.com';
+process.env.CLIENT_ID = process.env.CLIENT_ID || '340599876929-n94tsi9p9b5322pobgrcc1jvd6iro7tp.apps.googleusercontent.com';

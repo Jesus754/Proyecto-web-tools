@@ -66,13 +66,19 @@ async function verify(token) {
         audience: process.env.CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
         // Or, if multiple clients access the backend:
         //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+    })
+    .catch((err) => {
+        console.log(err);
     });
     const payload = ticket.getPayload();
+    console.log(payload);
     return {
-        nombre: payload.name,
-        email: payload.email,
+        
+        nombre: payload.given_name,
+        apellido: payload.family_name,
         img: payload.picture,
-        google: true
+        email: payload.email,
+        
     }
 
 }
@@ -87,9 +93,7 @@ router.post('/google', async (req, res) => {
                 err
             })
         })
-
-
-    // parametrizas expiresIn en config
+    console.log(googleUser);
     Usuario.findOne({ email: googleUser.email }, (err, usuario) => {
         if (err) {
             return res.status(500).json({
@@ -124,10 +128,15 @@ router.post('/google', async (req, res) => {
             // si no existe en db lo grabo en la base
             let usuario = new Usuario();
             usuario.nombre = googleUser.nombre,
-                usuario.email = googleUser.email,
-                usuario.img = googleUser.img,
-                usuario.google = googleUser.google,
-                usuario.password = ':)'
+            usuario.apellido = googleUser.apellido,
+            usuario.img = googleUser.img,
+            usuario.google = googleUser.google,
+            usuario.contraseña = "-",
+            usuario.telefono = "-",
+            usuario.direccion = "-",
+            usuario.email = googleUser.email,
+            usuario.google = true,
+                
 
             usuario.save((err, usuario) => {
                 if (err) {

@@ -3,40 +3,6 @@ const Usuario = require('../models/usuario');
 const Pizza = require('../models/pizza');
 const bcrypt = require('bcrypt');
 
-exports.getAllPedidos = function getAllPedidos(req, res) {
-    Pedido.find({}, (err, pedidos) => {
-        if (err) {
-            res.status(400).json({
-                ok: false,
-                err: err,
-            })
-        } else {
-            res.status(200).json({
-                ok: true,
-                pedidos: pedidos
-            })
-        }
-    })
-
-}
-
-exports.deleteAll = function deleteAll(req, res) {
-    Pedido.deleteMany({}, (err, pedidos) => {
-        if (err) {
-            res.status(400).json({
-                ok: false,
-                err: err,
-                mensaje: 'La eliminacion de los elementos fallo'
-            })
-        } else {
-            res.json({
-                ok: true,
-                mensaje: 'La eliminacion se realizo correctamente',
-                pedidos: pedidos
-            })
-        }
-    })
-}
 
 exports.getUsuarios = function getUsuarios(req, res) {
     Usuario.find({})
@@ -84,8 +50,8 @@ exports.createUsuario = function createUsuario(req, res) {
     let usuario = new Usuario({
         nombre: req.body.nombre,
         apellido: req.body.apellido,
-        direccion: req.body.direccion,
         telefono: req.body.telefono,
+        direccion: req.body.direccion,
         email: req.body.email,
         rol: req.body.rol,
         contraseña: bcrypt.hashSync(req.body.contraseña, 10) 
@@ -140,6 +106,7 @@ exports.deleteUsuario = function deleteUsuario(req, res) {
 
 exports.createAll = function createAll(req, res) {
     let usuarios = req.body;
+    
     Usuario.insertMany(usuarios, (err) => {
         if (err) {
             res.status(400).json({
@@ -209,7 +176,9 @@ exports.updateUsuario = function updateUsuario(req, res) {
 
 
 exports.getPedidos = function getPedidos(req, res) {
-    Pedido.find({ "usuarioId": req.params.id }, (err, pedidos) => {
+    Pedido.find({ "usuario": req.params.id })
+    .populate('usuario')
+    .exec ((err, pedidos) => {
         if (err) {
             res.status(400).json({
                 ok: false,
@@ -266,7 +235,7 @@ exports.createPedido = async function createPedido(req, res) {
 
     }
     let pedido = new Pedido({
-        usuarioId: req.params.id,
+        usuario: usuario._id,
         pizzas: pizzas,
         total: total
     })

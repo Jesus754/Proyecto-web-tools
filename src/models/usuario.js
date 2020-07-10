@@ -34,7 +34,7 @@ const UsuarioSchema = new Schema({
     },
     rol: {
         type: String,
-        default: 'USER_ROLE',
+        default: 'USER_ROLls',
         enum: rolesValidos
     },
     img: {
@@ -43,6 +43,7 @@ const UsuarioSchema = new Schema({
     },
     google: {
         type: String,
+        default: false
     },
     contraseña: {
         type: String,

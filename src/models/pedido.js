@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const mongooseUniqueValidator = require('mongoose-unique-validator');
-//const UsuarioSchema = require('../models/usuario');
+const { ObjectId } = require('mongoose/lib/schema');
+const UsuarioSchema = require('../models/usuario');
 var AutoIncrement = require('mongoose-sequence')(mongoose);
 
 
@@ -8,7 +9,10 @@ const Schema = mongoose.Schema;
 
 const PedidoSchema = new Schema({
     numero: Number,
-    usuarioId: String, 
+    usuario: {
+        type: ObjectId,
+        ref: 'usuario'
+    }, 
     pizzas: [{
         nombre: String,
         cantidad: Number
