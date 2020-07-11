@@ -4,7 +4,7 @@ const Pizza = require('../models/pizza')
 
 exports.getAllPedidos = function getAllPedidos(req, res) {
     Pedido.find({})
-        .populate('usuario')
+        .populate('usuario', 'nombre apellido direccion email')
         .exec((err, pedidos) => {
 
             if (err) {

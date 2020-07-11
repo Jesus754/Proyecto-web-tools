@@ -177,7 +177,7 @@ exports.updateUsuario = function updateUsuario(req, res) {
 
 exports.getPedidos = function getPedidos(req, res) {
     Pedido.find({ "usuario": req.params.id })
-    .populate('usuario')
+    .populate('usuario', 'nombre apellido direccion email')
     .exec ((err, pedidos) => {
         if (err) {
             res.status(400).json({
