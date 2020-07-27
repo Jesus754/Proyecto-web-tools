@@ -4,11 +4,11 @@ const usuarioController = require('../Controller/usuarioController');
 const { verificaToken, verificaAdminRol } = require('../middlewares/autenticacion')
 
 
-router.post('/usuario',verificaToken, usuarioController.createUsuario);
+router.post('/usuario',/*verificaToken*/ usuarioController.createUsuario);
 
 router.put("/usuario/:id",verificaToken, usuarioController.updateUsuario);
 
-router.get('/usuarios', verificaToken,verificaAdminRol, usuarioController.getUsuarios);
+router.get('/usuarios', [/*verificaToken,verificaAdminRol*/], usuarioController.getUsuarios);
 
 router.get('/usuario/:id',[verificaToken,verificaAdminRol], usuarioController.getUsuario);
 
@@ -18,8 +18,8 @@ router.post('/usuario/:id/pedido',verificaToken, usuarioController.createPedido)
 
 router.get('/usuario/:id/pedidos',verificaToken, usuarioController.getPedidos);
 
-router.post("/usuarios/createAll",[verificaToken,verificaAdminRol], usuarioController.createAll);
+router.post("/usuarios/createAll",/*[verificaToken,verificaAdminRol],*/ usuarioController.createAll);
 
-router.delete("/usuarios/deleteAll",[verificaToken,verificaAdminRol], usuarioController.deleteAll);
+router.delete("/usuarios/deleteAll",/*[verificaToken,verificaAdminRol]*/ usuarioController.deleteAll);
 
 module.exports = router;

@@ -34,7 +34,7 @@ const UsuarioSchema = new Schema({
     },
     rol: {
         type: String,
-        default: 'USER_ROLls',
+        default: 'USER_ROL',
         enum: rolesValidos
     },
     img: {

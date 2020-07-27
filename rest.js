@@ -3,7 +3,9 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const path = require('path');
+var cors = require('cors')
 
+app.use(cors()) 
 app.set('port', 3000);
 
 app.use(bodyParser.urlencoded({ extended:false}));
