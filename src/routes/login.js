@@ -22,7 +22,7 @@ router.post('/login', (req, res) => {
             })
         }
         if (!usuario) {
-            return res.status(400).json({
+            return res.status(409).json({
                 ok: false,
                 err: {
                     mensaje: 'Usuario o contraseña incorrectos'
@@ -42,7 +42,8 @@ router.post('/login', (req, res) => {
             data: usuario,
         }, 'secret', { expiresIn: 60 * 60 * 24 * 30 });
 
-
+        console.log("Response backend ", usuario);
+        console.log("Token ", token);
         res.json({
             ok: true,
             usuario: {
@@ -53,7 +54,8 @@ router.post('/login', (req, res) => {
                 telefono: usuario.telefono,
                 email: usuario.email
             },
-            token: token
+            token: token,
+            expiresIn: 60 * 60 * 24 * 30
         })
 
     })

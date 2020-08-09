@@ -12,11 +12,11 @@ router.get('/usuarios', [/*verificaToken,verificaAdminRol*/], usuarioController.
 
 router.get('/usuario/:id',[verificaToken,verificaAdminRol], usuarioController.getUsuario);
 
-router.delete("/usuario/:id",verificaToken, usuarioController.deleteUsuario);
+router.delete("/usuario/:id", usuarioController.deleteUsuario);
 
-router.post('/usuario/:id/pedido',verificaToken, usuarioController.createPedido);
+router.post('/usuario/:id/pedido', usuarioController.createPedido);
 
-router.get('/usuario/:id/pedidos',verificaToken, usuarioController.getPedidos);
+router.get('/usuario/:id/pedidos', usuarioController.getPedidos);
 
 router.post("/usuarios/createAll",/*[verificaToken,verificaAdminRol],*/ usuarioController.createAll);
 
