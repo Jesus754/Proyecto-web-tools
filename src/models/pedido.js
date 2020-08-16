@@ -7,20 +7,34 @@ var AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const Schema = mongoose.Schema;
 
+let estado = {
+    values: ['pendiente', 'aceptado', "enviado"],
+    message: '{VALUE} no es un estado válido'
+};
+
 const PedidoSchema = new Schema({
-    numero: Number,
-    usuario: {
+    user_id: {
         type: ObjectId,
         ref: 'usuario'
     }, 
-    pizzas: [{
+    pedido: [{
         nombre: String,
+        precio: Number,
+        total: Number,
         cantidad: Number
     }],
+    fecha: {
+        type: String,
+    },
     total: {
         type: Number,
+    },
+    
+    estado: { 
+        type:String,
+        default: 'pendiente',
+        enum: estado
     }
 })
 
-PedidoSchema.plugin(AutoIncrement, {id:'order_seq',inc_field: 'numero'});
 module.exports = mongoose.model('pedido', PedidoSchema);

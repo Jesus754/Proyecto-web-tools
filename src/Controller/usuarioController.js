@@ -187,7 +187,7 @@ exports.updateUsuario = function updateUsuario(req, res) {
 
 
 exports.getPedidos = function getPedidos(req, res) {
-    Pedido.find({ "usuario": req.params.id })
+    Pedido.find({ "user_id": req.params.id })
         .populate('usuario', 'nombre apellido direccion email')
         .exec((err, pedidos) => {
             if (err) {
@@ -205,9 +205,11 @@ exports.getPedidos = function getPedidos(req, res) {
 }
 
 exports.createPedido = async function createPedido(req, res) {
-    let pizzas = req.body.pizzas;
+    let pedido = req.body.pedido;
+    let idUsuario = req.body.user_id;
+    let total = req.body.total_pedido;
     try {
-        usuario = await Usuario.findById(req.params.id);
+        usuario = await Usuario.findById(idUsuario);
         if (usuario == null) {
             res.status(404).json({
                 ok: false,
@@ -216,41 +218,22 @@ exports.createPedido = async function createPedido(req, res) {
             return;
         }
     } catch (err) {
+        console.log(err);
         res.status(400).json({
             ok: false,
             err: err,
         })
         return;
     }
-    let total = 0;
-    for (var i = 0; i < Object.keys(req.body.pizzas).length; i++) {
-        try {
-            pizza = await Pizza.findOne({ nombre: pizzas[i].nombre })
-            if (pizza === null) {
-                res.status(404).json({
-                    ok: false,
-                    mensaje: 'Alguna de las pizzas pedidas no se encuentra en la coleccion',
-                })
-                return;
-            } else {
-                total = total + pizza.precio * pizzas[i].cantidad;
-            }
-        }
-        catch (err) {
-            res.status(400).json({
-                ok: false,
-                err: err,
-            })
-            return;
-        }
 
-    }
-    let pedido = new Pedido({
-        usuario: usuario._id,
-        pizzas: pizzas,
-        total: total
+    let data = new Pedido({
+        pedido: pedido,
+        user_id : idUsuario,
+        total: total,
+        fecha: getDateTime()
+
     })
-    pedido.save((err) => {
+    data.save((err) => {
         if (err) {
             res.status(400).json({
                 ok: false,
@@ -260,8 +243,33 @@ exports.createPedido = async function createPedido(req, res) {
             res.json({
                 ok: true,
                 mensaje: 'Pedido registrado',
-                pedido: pedido
+                pedido: data
             })
         }
     })
+}
+
+function getDateTime() {
+
+    var date = new Date();
+
+    var hour = date.getHours();
+    hour = (hour < 10 ? "0" : "") + hour;
+
+    var min  = date.getMinutes();
+    min = (min < 10 ? "0" : "") + min;
+
+    var sec  = date.getSeconds();
+    sec = (sec < 10 ? "0" : "") + sec;
+
+    var year = date.getFullYear();
+
+    var month = date.getMonth() + 1;
+    month = (month < 10 ? "0" : "") + month;
+
+    var day  = date.getDate();
+    day = (day < 10 ? "0" : "") + day;
+
+    return year + ":" + month + ":" + day + "-" + hour + ":" + min + ":" + sec;
+
 }

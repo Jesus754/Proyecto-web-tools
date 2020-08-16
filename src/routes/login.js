@@ -40,7 +40,7 @@ router.post('/login', (req, res) => {
         // parametrizas expiresIn en config
         let token = jwt.sign({
             data: usuario,
-        }, 'secret', { expiresIn: 60 * 60 * 24 * 30 });
+        }, 'secret', { expiresIn: 3600 });
 
         console.log("Response backend ", usuario);
         console.log("Token ", token);
@@ -55,7 +55,7 @@ router.post('/login', (req, res) => {
                 email: usuario.email
             },
             token: token,
-            expiresIn: 60 * 60 * 24 * 30
+            expiresIn: 3600
         })
 
     })

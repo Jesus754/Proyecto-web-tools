@@ -14,7 +14,7 @@ router.get('/usuario/:id',[verificaToken,verificaAdminRol], usuarioController.ge
 
 router.delete("/usuario/:id", usuarioController.deleteUsuario);
 
-router.post('/usuario/:id/pedido', usuarioController.createPedido);
+router.post('/usuario/pedido', usuarioController.createPedido);
 
 router.get('/usuario/:id/pedidos', usuarioController.getPedidos);
 
