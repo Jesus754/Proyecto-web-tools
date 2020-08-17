@@ -187,8 +187,9 @@ exports.updateUsuario = function updateUsuario(req, res) {
 
 
 exports.getPedidos = function getPedidos(req, res) {
+    console.log("pedidos",req.params.id)
     Pedido.find({ "user_id": req.params.id })
-        .populate('usuario', 'nombre apellido direccion email')
+        .populate('pedidos.pedido', 'nombre')
         .exec((err, pedidos) => {
             if (err) {
                 res.status(400).json({
@@ -197,8 +198,11 @@ exports.getPedidos = function getPedidos(req, res) {
                 })
             } else {
                 res.status(200).json({
-                    ok: true,
-                    pedidos: pedidos
+                    ok: true,       
+                    pedidos : pedidos,
+                    user_id: pedidos[0].user_id,
+
+                    
                 })
             }
         })
@@ -271,5 +275,5 @@ function getDateTime() {
     day = (day < 10 ? "0" : "") + day;
 
     return year + ":" + month + ":" + day + "-" + hour + ":" + min + ":" + sec;
-
+    return day + "/" + month + "/" + year + "-" + hour + ":" + min + ":" + sec;
 }
