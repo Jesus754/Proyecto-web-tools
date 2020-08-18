@@ -197,7 +197,7 @@ exports.getPedidos = function getPedidos(req, res) {
                     err: err,
                 })
             } else {
-                if (pedidos == undefined ){
+                if (pedidos === undefined ){
                     res.status(404).json({
                         ok:true,
                         mensaje: 'No hay pedidos del usuario'
