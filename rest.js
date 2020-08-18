@@ -1,15 +1,23 @@
+require('./src/config/config');
 const connection = require('./src/connection');
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const path = require('path');
+var cors = require('cors')
 
-app.set('port', 3000);
+app.use(cors()) 
+app.set('port', process.env.PORT);
 
 app.use(bodyParser.urlencoded({ extended:false}));
 app.use(bodyParser.json());
 
 
 app.use('/api',require('./src/routes/index'));
+
+//habilitar views
+app.use( express.static( path.resolve(__dirname, './src/views')));
+
 
 app.listen(app.get('port'), () => {
     console.log("Servidor corriendo en", app.get('port'));

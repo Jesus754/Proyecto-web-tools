@@ -1,24 +1,25 @@
 const { Router } = require('express');
 const router = Router();
-const usuarioController = require('../Controller/usuarioController')
+const usuarioController = require('../Controller/usuarioController');
+const { verificaToken, verificaAdminRol } = require('../middlewares/autenticacion')
 
 
-router.post('/usuario', usuarioController.createUsuario);
+router.post('/usuario',/*verificaToken*/ usuarioController.createUsuario);
 
-router.put("/usuario/:id", usuarioController.updateUsuario);
+router.put("/usuario/:id",verificaToken, usuarioController.updateUsuario);
 
-router.get('/usuarios', usuarioController.getUsuarios);
+router.get('/usuarios', [/*verificaToken,verificaAdminRol*/], usuarioController.getUsuarios);
 
-router.get('/usuario/:id', usuarioController.getUsuario);
+router.get('/usuario/:id',[verificaToken,verificaAdminRol], usuarioController.getUsuario);
 
 router.delete("/usuario/:id", usuarioController.deleteUsuario);
 
-router.post('/usuario/:id/pedido',usuarioController.createPedido);
+router.post('/usuario/pedido', usuarioController.createPedido);
 
 router.get('/usuario/:id/pedidos', usuarioController.getPedidos);
 
-router.post("/usuarios/createAll", usuarioController.createAll);
+router.post("/usuarios/createAll",/*[verificaToken,verificaAdminRol],*/ usuarioController.createAll);
 
-router.delete("/usuarios/deleteAll", usuarioController.deleteAll);
+router.delete("/usuarios/deleteAll",/*[verificaToken,verificaAdminRol]*/ usuarioController.deleteAll);
 
 module.exports = router;

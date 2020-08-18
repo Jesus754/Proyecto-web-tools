@@ -1,9 +1,9 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
   "main": "server.js",
   "scripts": {
+    "start": "node rest",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,8 +18,10 @@
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "chalk": "^4.1.0",
+
+    "cors": "^2.8.5",
     "express": "^4.17.1",
-    "google-auth-library": "^6.0.3",
+    "google-auth-library": "^6.0.6",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.5.9",
     "mongoose-sequence": "^5.2.2",

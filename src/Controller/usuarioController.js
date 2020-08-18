@@ -1,44 +1,12 @@
 const Pedido = require('../models/pedido');
 const Usuario = require('../models/usuario');
-const Pizza = require('../models/pizza')
+const Pizza = require('../models/pizza');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
-exports.getAllPedidos = function getAllPedidos(req, res) {
-    Pedido.find({}, (err, pedidos) => {
-        if (err) {
-            res.status(400).json({
-                ok: false,
-                err: err,
-            })
-        } else {
-            res.status(200).json({
-                ok: true,
-                pedidos: pedidos
-            })
-        }
-    })
-
-}
-
-exports.deleteAll = function deleteAll(req, res) {
-    Pedido.deleteMany({}, (err, pedidos) => {
-        if (err) {
-            res.status(400).json({
-                ok: false,
-                err: err,
-                mensaje: 'La eliminacion de los elementos fallo'
-            })
-        } else {
-            res.json({
-                ok: true,
-                mensaje: 'La eliminacion se realizo correctamente',
-                pedidos: pedidos
-            })
-        }
-    })
-}
 
 exports.getUsuarios = function getUsuarios(req, res) {
-    Usuario.find({}, ["nombre", "apellido", "direccion", "telefono", "email"])
+    Usuario.find({})
         .exec((err, usuarios) => {
             if (err) {
                 res.status(400).json({
@@ -56,7 +24,7 @@ exports.getUsuarios = function getUsuarios(req, res) {
 
 exports.getUsuario = function getUsuario(req, res) {
     let id = req.params.id;
-    Usuario.findById(id, ["nombre", "apellido", "direccion", "telefono", "email"])
+    Usuario.findById(id)
         .exec((err, usuario) => {
             if (err) {
                 res.status(400).json({
@@ -83,31 +51,43 @@ exports.createUsuario = function createUsuario(req, res) {
     let usuario = new Usuario({
         nombre: req.body.nombre,
         apellido: req.body.apellido,
-        direccion: req.body.direccion,
         telefono: req.body.telefono,
+        direccion: req.body.direccion,
         email: req.body.email,
-        contraseña: req.body.contraseña
+        rol: req.body.rol,
+        contraseña: bcrypt.hashSync(req.body.contraseña, 10)
     })
     usuario.save()
         .then((usuario) => {
-            res.status(201).json({
-                ok: true,
-                mensaje: 'El usuario se creo correctamente',
-                usuario: {
-                    _id: usuario._id,
-                    nombre: usuario.nombre,
-                    apellido: usuario.apellido,
-                    direccion: usuario.direccion,
-                    telefono: usuario.telefono,
-                    email: usuario.email
-                }
-            })
-        })
-        .catch((err) => {
-            res.status(400).json({
-                err: err
-            })
-        })
+            const expiresIn = 60 * 60 * 24 * 30;
+            const token = jwt.sign({ id: usuario.id },
+                'secret', {
+                expiresIn: expiresIn
+            }        
+        )
+    res.status(201).json({
+        ok: true,
+        mensaje: 'El usuario se creo correctamente',
+        usuario: {
+            _id: usuario._id,
+            nombre: usuario.nombre,
+            apellido: usuario.apellido,
+            direccion: usuario.direccion,
+            telefono: usuario.telefono,
+            email: usuario.email,
+            rol: usuario.rol
+        },
+        token: token,
+        espiresIn: expiresIn
+    })
+})
+        .catch ((err) => {
+                console.log(err)
+                res.status(400).json({
+        err: err, 
+        
+    })
+})
 }
 
 exports.deleteUsuario = function deleteUsuario(req, res) {
@@ -137,6 +117,7 @@ exports.deleteUsuario = function deleteUsuario(req, res) {
 
 exports.createAll = function createAll(req, res) {
     let usuarios = req.body;
+
     Usuario.insertMany(usuarios, (err) => {
         if (err) {
             res.status(400).json({
@@ -206,25 +187,33 @@ exports.updateUsuario = function updateUsuario(req, res) {
 
 
 exports.getPedidos = function getPedidos(req, res) {
-    Pedido.find({ "usuarioId": req.params.id }, (err, pedidos) => {
-        if (err) {
-            res.status(400).json({
-                ok: false,
-                err: err,
-            })
-        } else {
-            res.status(200).json({
-                ok: true,
-                pedidos: pedidos
-            })
-        }
-    })
+    console.log("pedidos",req.params.id)
+    Pedido.find({ "user_id": req.params.id })
+        .populate('pedidos.pedido', 'nombre')
+        .exec((err, pedidos) => {
+            if (err) {
+                res.status(400).json({
+                    ok: false,
+                    err: err,
+                })
+            } else {
+                res.status(200).json({
+                    ok: true,       
+                    pedidos : pedidos,
+                    user_id: pedidos[0].user_id,
+
+                    
+                })
+            }
+        })
 }
 
 exports.createPedido = async function createPedido(req, res) {
-    let pizzas = req.body.pizzas;
+    let pedido = req.body.pedido;
+    let idUsuario = req.body.user_id;
+    let total = req.body.total_pedido;
     try {
-        usuario = await Usuario.findById(req.params.id);
+        usuario = await Usuario.findById(idUsuario);
         if (usuario == null) {
             res.status(404).json({
                 ok: false,
@@ -233,41 +222,22 @@ exports.createPedido = async function createPedido(req, res) {
             return;
         }
     } catch (err) {
+        console.log(err);
         res.status(400).json({
             ok: false,
             err: err,
         })
         return;
     }
-    let total = 0;
-    for (var i = 0; i < Object.keys(req.body.pizzas).length; i++) {
-        try {
-            pizza = await Pizza.findOne({ nombre: pizzas[i].nombre })
-            if (pizza === null) {
-                res.status(404).json({
-                    ok: false,
-                    mensaje: 'Alguna de las pizzas pedidas no se encuentra en la coleccion',
-                })
-                return;
-            } else {
-                total = total + pizza.precio * pizzas[i].cantidad;
-            }
-        }
-        catch (err) {
-            res.status(400).json({
-                ok: false,
-                err: err,
-            })
-            return;
-        }
 
-    }
-    let pedido = new Pedido({
-        usuarioId: req.params.id,
-        pizzas: pizzas,
-        total: total
+    let data = new Pedido({
+        pedido: pedido,
+        user_id : idUsuario,
+        total: total,
+        fecha: getDateTime()
+
     })
-    pedido.save((err) => {
+    data.save((err) => {
         if (err) {
             res.status(400).json({
                 ok: false,
@@ -277,8 +247,33 @@ exports.createPedido = async function createPedido(req, res) {
             res.json({
                 ok: true,
                 mensaje: 'Pedido registrado',
-                pedido: pedido
+                pedido: data
             })
         }
     })
+}
+
+function getDateTime() {
+
+    var date = new Date();
+
+    var hour = date.getHours();
+    hour = (hour < 10 ? "0" : "") + hour;
+
+    var min  = date.getMinutes();
+    min = (min < 10 ? "0" : "") + min;
+
+    var sec  = date.getSeconds();
+    sec = (sec < 10 ? "0" : "") + sec;
+
+    var year = date.getFullYear();
+
+    var month = date.getMonth() + 1;
+    month = (month < 10 ? "0" : "") + month;
+
+    var day  = date.getDate();
+    day = (day < 10 ? "0" : "") + day;
+
+    return year + ":" + month + ":" + day + "-" + hour + ":" + min + ":" + sec;
+    return day + "/" + month + "/" + year + "-" + hour + ":" + min + ":" + sec;
 }
