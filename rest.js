@@ -15,8 +15,7 @@ app.use(bodyParser.json());
 
 app.use('/api',require('./src/routes/index'));
 
-//habilitar views
-app.use( express.static( path.resolve(__dirname, './src/views')));
+
 
 
 app.listen(app.get('port'), () => {
