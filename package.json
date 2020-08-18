@@ -23,13 +23,13 @@
     "google-auth-library": "^6.0.6",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.5.9",
+    "mongoose": "^5.10.0",
     "mongoose-sequence": "^5.2.2",
     "mongoose-unique-validator": "^2.0.3",
     "morgan": "^1.10.0",
     "timespan": "^2.3.0"
   },
   "devDependencies": {
-    "mongoose": "^5.9.22",
     "nodemon": "^2.0.4"
   }
 }
