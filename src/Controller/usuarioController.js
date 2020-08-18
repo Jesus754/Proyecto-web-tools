@@ -197,6 +197,7 @@ exports.getPedidos = function getPedidos(req, res) {
                     err: err,
                 })
             } else {
+                console.log(pedidos);
                 if (pedidos === undefined ){
                     res.status(404).json({
                         ok:true,
