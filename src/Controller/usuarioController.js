@@ -202,14 +202,14 @@ exports.getPedidos = function getPedidos(req, res) {
                         ok:true,
                         mensaje: 'No hay pedidos del usuario'
                     }) 
+                }else {
+                    res.status(200).json({
+                        ok: true,       
+                        pedidos : pedidos,
+                        user_id: pedidos[0].user_id,                
+                    })
                 }
-                res.status(200).json({
-                    ok: true,       
-                    pedidos : pedidos,
-                    user_id: pedidos[0].user_id,
-
-                    
-                })
+                
             }
         })
 }
