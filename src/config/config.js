@@ -13,7 +13,7 @@ let urlDB;
 if (process.env.NODE_ENV === 'dev') {
     urlDB = 'mongodb://jebu:123@localhost:2222/taller_web';
 } else {
-    urlDB = 'mongodb+srv://jebu:123@cluster0.fa5gg.mongodb.net/test';
+    urlDB = 'mongodb+srv://jebu:123@cluster0.fa5gg.mongodb.net/taller_web';
 }
 
 process.env.URLDB = urlDB;
