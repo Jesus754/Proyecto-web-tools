@@ -219,6 +219,7 @@ exports.createPedido = async function createPedido(req, res) {
     let pedido = req.body.pedido;
     let idUsuario = req.body.user_id;
     let total = req.body.total_pedido;
+    console.log("idUsuario:",req.body.user_id)
     try {
         usuario = await Usuario.findById(idUsuario);
         if (usuario == null) {
